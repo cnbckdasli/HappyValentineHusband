@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Valentine's Proposal</title>
+  <style>
+    body {
+      background: #ffebef;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+    }
+
+    .heart {
+      width: 100px;
+      height: 90px;
+      position: relative;
+      transform: rotate(-45deg);
+      animation: pulse 1s infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      width: 100px;
+      height: 90px;
+      border-radius: 50%;
+      background: red;
+      position: absolute;
+    }
+
+    .heart::before {
+      top: -50px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 50px;
+      top: 0;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1) rotate(-45deg); }
+      50% { transform: scale(1.2) rotate(-45deg); }
+      100% { transform: scale(1) rotate(-45deg); }
+    }
+
+    h1 {
+      margin-top: 30px;
+      color: #d10000;
+      font-size: 2em;
+      text-align: center;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 1.2em;
+      background: #d10000;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #a00000;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: red;
+      animation: fall 3s linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .broken-heart {
+      font-size: 4em;
+      color: #555;
+      animation: shake 0.5s infinite;
+      margin-top: 20px;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Music -->
+  <audio autoplay loop>
+    <source src="romantic.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="heart"></div>
+  <h1>Will you be my Valentine? ❤️</h1>
+  <div class="buttons">
+    <button onclick="launchConfetti()">Yes!</button>
+    <button onclick="brokenHeart()">No...</button>
+  </div>
+
+  <div id="response"></div>
+
+  <script>
+    function launchConfetti() {
+      for (let i = 0; i < 50; i++) {
+        let confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        document.body.appendChild(confetti);
+
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.background = ["red", "pink", "hotpink", "deeppink"][Math.floor(Math.random() * 4)];
+
+        let size = Math.random() * 12 + 8;
+        confetti.style.width = size + "px";
+        confetti.style.height = size + "px";
+
+        confetti.style.animationDelay = Math.random() * 2 + "s";
+
+        setTimeout(() => { confetti.remove(); }, 3000);
+      }
+      alert("Yay! ❤️ You said YES!");
+    }
+
+    function brokenHeart() {
+      let responseDiv = document.getElementById("response");
+      responseDiv.innerHTML = "<div class='broken-heart'>💔</div><p style='color:#555;font-size:1.2em;'>Oh no... my heart is broken!</p>";
+    }
+  </script>
+</body>
+</html>
