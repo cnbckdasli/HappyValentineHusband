@@ -115,3 +115,49 @@
   </style>
 </head>
 <body>
+  <!-- Background Music -->
+  <audio autoplay loop>
+    <source src="romantic.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Floating hearts -->
+  <div class="floating-heart" style="left:20%; animation-delay:0s;">❤️</div>
+  <div class="floating-heart" style="left:50%; animation-delay:2s;">💖</div>
+  <div class="floating-heart" style="left:70%; animation-delay:4s;">💕</div>
+
+  <div class="heart"></div>
+  <h1>Will you be my Valentine? ❤️</h1>
+  <div class="buttons">
+    <button onclick="launchConfetti()">Yes!</button>
+    <button onclick="brokenHeart()">No...</button>
+  </div>
+
+  <div id="response"></div>
+
+  <script>
+    function launchConfetti() {
+      for (let i = 0; i < 50; i++) {
+        let confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        document.body.appendChild(confetti);
+
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.background = ["red","pink","hotpink","deeppink"][Math.floor(Math.random()*4)];
+
+        let size = Math.random() * 12 + 8;
+        confetti.style.width = size + "px";
+        confetti.style.height = size + "px";
+
+        confetti.style.animationDelay = Math.random() * 2 + "s";
+        setTimeout(() => { confetti.remove(); }, 3000);
+      }
+      alert("Yay! ❤️ You said YES!");
+    }
+
+    function brokenHeart() {
+      let responseDiv = document.getElementById("response");
+      responseDiv.innerHTML = "<div class='broken-heart'>💔</div><p style='color:#555;font-size:1.2em;'>Oh no... my heart is broken!</p>";
+    }
+  </script>
+</body>
+</html>
