@@ -6,13 +6,14 @@
   <style>
     body {
       background: #ffebef;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
-      font-family: 'Arial', sans-serif;
+      margin: 0;
       overflow: hidden;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
 
     /* Floating hearts background */
@@ -22,13 +23,13 @@
       color: red;
       animation: floatUp 8s linear infinite;
     }
-
     @keyframes floatUp {
       0% { transform: translateY(100vh) scale(0.5); opacity: 0.7; }
       50% { opacity: 1; }
       100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
     }
 
+    /* Central pulsing heart */
     .heart {
       width: 100px;
       height: 90px;
@@ -36,7 +37,6 @@
       transform: rotate(-45deg);
       animation: pulse 1s infinite;
     }
-
     .heart::before,
     .heart::after {
       content: "";
@@ -46,31 +46,37 @@
       background: red;
       position: absolute;
     }
-
     .heart::before { top: -50px; left: 0; }
     .heart::after { left: 50px; top: 0; }
-
     @keyframes pulse {
       0% { transform: scale(1) rotate(-45deg); }
       50% { transform: scale(1.2) rotate(-45deg); }
       100% { transform: scale(1) rotate(-45deg); }
     }
 
+    /* Proposal text typing + glow */
     h1 {
       margin-top: 30px;
       color: #d10000;
       font-size: 2em;
       text-align: center;
-      animation: glow 2s ease-in-out infinite alternate;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid #d10000;
+      width: 0;
+      animation: typing 4s steps(30, end) forwards, glow 2s ease-in-out infinite alternate;
     }
-
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
     @keyframes glow {
       from { text-shadow: 0 0 10px #ff4d4d; }
       to { text-shadow: 0 0 20px #ff0000, 0 0 30px #ff4d4d; }
     }
 
+    /* Buttons */
     .buttons { margin-top: 20px; }
-
     button {
       margin: 0 10px;
       padding: 10px 20px;
@@ -82,41 +88,32 @@
       cursor: pointer;
       transition: transform 0.3s, background 0.3s;
     }
+    button:hover { background: #a00000; transform: scale(1.1); }
 
-    button:hover {
-      background: #a00000;
-      transform: scale(1.1);
-    }
-
-    .confetti {
+    /* Fireworks sparks */
+    .spark {
       position: absolute;
       width: 10px;
       height: 10px;
-      background: red;
-      animation: fall 3s linear forwards;
+      border-radius: 50%;
     }
 
-    @keyframes fall {
-      to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-    }
-
-    .broken-heart {
-      font-size: 4em;
-      color: #555;
+    /* Music control */
+    #musicControl {
       margin-top: 20px;
-      animation: crack 1s forwards;
-    }
-
-    @keyframes crack {
-      0% { transform: scale(1); }
-      50% { transform: rotate(-10deg) scale(1.1); }
-      100% { transform: rotate(10deg) scale(0.8); opacity: 0.5; }
+      font-size: 1em;
+      background: #ff4d4d;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      color: white;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <!-- Background Music -->
-  /*<audio autoplay loop>
+  /*<audio id="bgMusic" autoplay loop>
     <source src="romantic.mp3" type="audio/mpeg">
   </audio>*/
 
@@ -124,41 +121,64 @@
   <div class="floating-heart" style="left:20%; animation-delay:0s;">❤️</div>
   <div class="floating-heart" style="left:50%; animation-delay:2s;">💖</div>
   <div class="floating-heart" style="left:70%; animation-delay:4s;">💕</div>
+  <div class="floating-heart" style="left:30%; animation-delay:6s;">💞</div>
 
+  <!-- Central heart + text -->
   <div class="heart"></div>
   <h1>Will you be my Valentine? ❤️</h1>
+
+  <!-- Buttons -->
   <div class="buttons">
-    <button onclick="launchConfetti()">Yes!</button>
-    <button onclick="brokenHeart()">No...</button>
+    <button onclick="launchFireworks()">Yes!</button>
+    <button id="noBtn">No...</button>
   </div>
 
-  <div id="response"></div>
+  <!-- Music control -->
+  /*<button id="musicControl">Pause Music 🎶</button>*/
 
   <script>
-    function launchConfetti() {
-      for (let i = 0; i < 50; i++) {
-        let confetti = document.createElement("div");
-        confetti.classList.add("confetti");
-        document.body.appendChild(confetti);
+    // Fireworks effect
+    function launchFireworks() {
+      for (let i = 0; i < 30; i++) {
+        let spark = document.createElement("div");
+        spark.classList.add("spark");
+        spark.style.background = ["red","pink","gold","purple"][Math.floor(Math.random()*4)];
+        spark.style.left = window.innerWidth/2 + "px";
+        spark.style.top = window.innerHeight/2 + "px";
+        document.body.appendChild(spark);
 
-        confetti.style.left = Math.random() * window.innerWidth + "px";
-        confetti.style.background = ["red","pink","hotpink","deeppink"][Math.floor(Math.random()*4)];
+        let x = (Math.random() - 0.5) * 400;
+        let y = (Math.random() - 0.5) * 400;
+        spark.animate([
+          { transform: "translate(0,0)", opacity: 1 },
+          { transform: `translate(${x}px, ${y}px)`, opacity: 0 }
+        ], { duration: 1500, easing: "ease-out" });
 
-        let size = Math.random() * 12 + 8;
-        confetti.style.width = size + "px";
-        confetti.style.height = size + "px";
-
-        confetti.style.animationDelay = Math.random() * 2 + "s";
-        setTimeout(() => { confetti.remove(); }, 3000);
+        setTimeout(() => spark.remove(), 1500);
       }
       alert("Yay! ❤️ You said YES!");
     }
 
-    function brokenHeart() {
-      let responseDiv = document.getElementById("response");
-      responseDiv.innerHTML = "<div class='broken-heart'>💔</div><p style='color:#555;font-size:1.2em;'>Oh no... my heart is broken!</p>";
-    }
+    // No button runs away
+    const noBtn = document.getElementById("noBtn");
+    noBtn.addEventListener("mouseover", () => {
+      noBtn.style.position = "absolute";
+      noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+      noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
+    });
+
+    // Music control
+    /*const bgMusic = document.getElementById("bgMusic");
+    const musicControl = document.getElementById("musicControl");
+    musicControl.addEventListener("click", () => {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicControl.textContent = "Pause Music 🎶";
+      } else {
+        bgMusic.pause();
+        musicControl.textContent = "Play Music 🎶";
+      }
+    });*/
   </script>
 </body>
 </html>
-
