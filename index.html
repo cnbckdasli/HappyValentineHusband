@@ -40,11 +40,11 @@
     .heart::before,
     .heart::after {
       content: "";
+      position: absolute;
       width: 100px;
       height: 90px;
-      border-radius: 50%;
       background: red;
-      position: absolute;
+      border-radius: 50%;
     }
     .heart::before { top: -50px; left: 0; }
     .heart::after { left: 50px; top: 0; }
@@ -97,26 +97,9 @@
       height: 10px;
       border-radius: 50%;
     }
-
-    /* Music control */
-    #musicControl {
-      margin-top: 20px;
-      font-size: 1em;
-      background: #ff4d4d;
-      border: none;
-      border-radius: 6px;
-      padding: 8px 16px;
-      color: white;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
-  <!-- Background Music -->
-  <audio id="bgMusic" autoplay loop>
-    <source src="romantic.mp3" type="audio/mpeg">
-  </audio>
-
   <!-- Floating hearts -->
   <div class="floating-heart" style="left:20%; animation-delay:0s;">❤️</div>
   <div class="floating-heart" style="left:50%; animation-delay:2s;">💖</div>
@@ -132,9 +115,6 @@
     <button onclick="launchFireworks()">Yes!</button>
     <button id="noBtn">No...</button>
   </div>
-
-  <!-- Music control -->
-  <button id="musicControl">Pause Music 🎶</button>
 
   <script>
     // Fireworks effect
@@ -165,19 +145,6 @@
       noBtn.style.position = "absolute";
       noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
       noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
-    });
-
-    // Music control
-    const bgMusic = document.getElementById("bgMusic");
-    const musicControl = document.getElementById("musicControl");
-    musicControl.addEventListener("click", () => {
-      if (bgMusic.paused) {
-        bgMusic.play();
-        musicControl.textContent = "Pause Music 🎶";
-      } else {
-        bgMusic.pause();
-        musicControl.textContent = "Play Music 🎶";
-      }
     });
   </script>
 </body>
