@@ -15,6 +15,20 @@
       overflow: hidden;
     }
 
+    /* Floating hearts background */
+    .floating-heart {
+      position: absolute;
+      font-size: 1.5em;
+      color: red;
+      animation: floatUp 8s linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) scale(0.5); opacity: 0.7; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
     .heart {
       width: 100px;
       height: 90px;
@@ -33,15 +47,8 @@
       position: absolute;
     }
 
-    .heart::before {
-      top: -50px;
-      left: 0;
-    }
-
-    .heart::after {
-      left: 50px;
-      top: 0;
-    }
+    .heart::before { top: -50px; left: 0; }
+    .heart::after { left: 50px; top: 0; }
 
     @keyframes pulse {
       0% { transform: scale(1) rotate(-45deg); }
@@ -54,11 +61,15 @@
       color: #d10000;
       font-size: 2em;
       text-align: center;
+      animation: glow 2s ease-in-out infinite alternate;
     }
 
-    .buttons {
-      margin-top: 20px;
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ff4d4d; }
+      to { text-shadow: 0 0 20px #ff0000, 0 0 30px #ff4d4d; }
     }
+
+    .buttons { margin-top: 20px; }
 
     button {
       margin: 0 10px;
@@ -69,11 +80,12 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: transform 0.3s, background 0.3s;
     }
 
     button:hover {
       background: #a00000;
+      transform: scale(1.1);
     }
 
     .confetti {
@@ -85,70 +97,21 @@
     }
 
     @keyframes fall {
-      to {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
+      to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
     }
 
     .broken-heart {
       font-size: 4em;
       color: #555;
-      animation: shake 0.5s infinite;
       margin-top: 20px;
+      animation: crack 1s forwards;
     }
 
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
+    @keyframes crack {
+      0% { transform: scale(1); }
+      50% { transform: rotate(-10deg) scale(1.1); }
+      100% { transform: rotate(10deg) scale(0.8); opacity: 0.5; }
     }
   </style>
 </head>
 <body>
-  <!-- Background Music -->
-  /*<audio autoplay loop>
-    <source src="romantic.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>*/
-
-  <div class="heart"></div>
-  <h1>Will you be my Valentine? ❤️</h1>
-  <div class="buttons">
-    <button onclick="launchConfetti()">Yes!</button>
-    <button onclick="brokenHeart()">No...</button>
-  </div>
-
-  <div id="response"></div>
-
-  <script>
-    function launchConfetti() {
-      for (let i = 0; i < 50; i++) {
-        let confetti = document.createElement("div");
-        confetti.classList.add("confetti");
-        document.body.appendChild(confetti);
-
-        confetti.style.left = Math.random() * window.innerWidth + "px";
-        confetti.style.background = ["red", "pink", "hotpink", "deeppink"][Math.floor(Math.random() * 4)];
-
-        let size = Math.random() * 12 + 8;
-        confetti.style.width = size + "px";
-        confetti.style.height = size + "px";
-
-        confetti.style.animationDelay = Math.random() * 2 + "s";
-
-        setTimeout(() => { confetti.remove(); }, 3000);
-      }
-      alert("Yay! ❤️ You said YES!");
-    }
-
-    function brokenHeart() {
-      let responseDiv = document.getElementById("response");
-      responseDiv.innerHTML = "<div class='broken-heart'>💔</div><p style='color:#555;font-size:1.2em;'>Oh no... my heart is broken!</p>";
-    }
-  </script>
-</body>
-</html>
-
