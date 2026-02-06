@@ -5,7 +5,7 @@
   <title>Valentine's Proposal</title>
   <style>
     body {
-      background: #ffebef;
+      background: linear-gradient(135deg, #ffebef, #ffe0e6);
       margin: 0;
       overflow: hidden;
       font-family: 'Arial', sans-serif;
@@ -19,8 +19,7 @@
     /* Floating hearts background */
     .floating-heart {
       position: absolute;
-      font-size: 1.5em;
-      color: red;
+      font-size: 2em;
       animation: floatUp 8s linear infinite;
     }
     @keyframes floatUp {
@@ -29,11 +28,12 @@
       100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
     }
 
-    /* Central pulsing heart */
+    /* Proper heart shape */
     .heart {
-      width: 100px;
-      height: 90px;
       position: relative;
+      width: 120px;
+      height: 120px;
+      background: red;
       transform: rotate(-45deg);
       animation: pulse 1s infinite;
     }
@@ -41,13 +41,13 @@
     .heart::after {
       content: "";
       position: absolute;
-      width: 100px;
-      height: 90px;
+      width: 120px;
+      height: 120px;
       background: red;
       border-radius: 50%;
     }
-    .heart::before { top: -50px; left: 0; }
-    .heart::after { left: 50px; top: 0; }
+    .heart::before { top: -60px; left: 0; }
+    .heart::after { left: 60px; top: 0; }
     @keyframes pulse {
       0% { transform: scale(1) rotate(-45deg); }
       50% { transform: scale(1.2) rotate(-45deg); }
@@ -58,7 +58,7 @@
     h1 {
       margin-top: 30px;
       color: #d10000;
-      font-size: 2em;
+      font-size: 2.5em;
       text-align: center;
       white-space: nowrap;
       overflow: hidden;
@@ -72,23 +72,23 @@
     }
     @keyframes glow {
       from { text-shadow: 0 0 10px #ff4d4d; }
-      to { text-shadow: 0 0 20px #ff0000, 0 0 30px #ff4d4d; }
+      to { text-shadow: 0 0 30px #ff0000, 0 0 40px #ff4d4d; }
     }
 
     /* Buttons */
     .buttons { margin-top: 20px; }
     button {
       margin: 0 10px;
-      padding: 10px 20px;
-      font-size: 1.2em;
+      padding: 12px 24px;
+      font-size: 1.3em;
       background: #d10000;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
       transition: transform 0.3s, background 0.3s;
     }
-    button:hover { background: #a00000; transform: scale(1.1); }
+    button:hover { background: #a00000; transform: scale(1.2) rotate(3deg); }
 
     /* Fireworks sparks */
     .spark {
@@ -97,14 +97,49 @@
       height: 10px;
       border-radius: 50%;
     }
+
+    /* Confetti */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 20px;
+      background: red;
+      opacity: 0.8;
+      animation: fall 3s linear forwards;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Floating kiss emojis */
+    .kiss {
+      position: absolute;
+      font-size: 2em;
+      animation: floatKiss 6s linear infinite;
+    }
+    @keyframes floatKiss {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0.7; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
   </style>
 </head>
 <body>
+  <!-- Background music -->
+  <audio autoplay loop>
+    <source src="romantic.mp3" type="audio/mpeg">
+  </audio>
+
   <!-- Floating hearts -->
   <div class="floating-heart" style="left:20%; animation-delay:0s;">❤️</div>
   <div class="floating-heart" style="left:50%; animation-delay:2s;">💖</div>
   <div class="floating-heart" style="left:70%; animation-delay:4s;">💕</div>
   <div class="floating-heart" style="left:30%; animation-delay:6s;">💞</div>
+
+  <!-- Floating kisses -->
+  <div class="kiss" style="left:40%; animation-delay:1s;">😘</div>
+  <div class="kiss" style="left:60%; animation-delay:3s;">💋</div>
 
   <!-- Central heart + text -->
   <div class="heart"></div>
@@ -112,14 +147,15 @@
 
   <!-- Buttons -->
   <div class="buttons">
-    <button onclick="launchFireworks()">Yes!</button>
+    <button onclick="launchCelebration()">Yes!</button>
     <button id="noBtn">No...</button>
   </div>
 
   <script>
-    // Fireworks effect
-    function launchFireworks() {
-      for (let i = 0; i < 30; i++) {
+    // Fireworks + Confetti effect
+    function launchCelebration() {
+      // Fireworks
+      for (let i = 0; i < 40; i++) {
         let spark = document.createElement("div");
         spark.classList.add("spark");
         spark.style.background = ["red","pink","gold","purple"][Math.floor(Math.random()*4)];
@@ -127,19 +163,37 @@
         spark.style.top = window.innerHeight/2 + "px";
         document.body.appendChild(spark);
 
-        let x = (Math.random() - 0.5) * 400;
-        let y = (Math.random() - 0.5) * 400;
+        let x = (Math.random() - 0.5) * 500;
+        let y = (Math.random() - 0.5) * 500;
         spark.animate([
           { transform: "translate(0,0)", opacity: 1 },
           { transform: `translate(${x}px, ${y}px)`, opacity: 0 }
-        ], { duration: 1500, easing: "ease-out" });
+        ], { duration: 2000, easing: "ease-out" });
 
-        setTimeout(() => spark.remove(), 1500);
+        setTimeout(() => spark.remove(), 2000);
       }
+
+      // Confetti
+      for (let i = 0; i < 50; i++) {
+        let confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.background = ["red","pink","gold","purple","white"][Math.floor(Math.random()*5)];
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.top = "-20px";
+        document.body.appendChild(confetti);
+
+        confetti.animate([
+          { transform: "translateY(0) rotate(0deg)", opacity: 1 },
+          { transform: `translateY(${window.innerHeight}px) rotate(${Math.random()*360}deg)`, opacity: 0 }
+        ], { duration: 3000, easing: "ease-in" });
+
+        setTimeout(() => confetti.remove(), 3000);
+      }
+
       alert("Yay! ❤️ You said YES!");
     }
 
-    // No button runs away
+    // No button runs away playfully
     const noBtn = document.getElementById("noBtn");
     noBtn.addEventListener("mouseover", () => {
       noBtn.style.position = "absolute";
